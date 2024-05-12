@@ -60,7 +60,7 @@ const UserLogin = () => {
         alert(data.message);
       } catch (error) {
         console.error("Error during registration:", error);
-        alert("An unexpected error occurred. Please try again later.");
+        alert("An unexpected error occurred. Please try again later.",error);
       }
     } else {
       alert("Please fill in all the fields.");

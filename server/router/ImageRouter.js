@@ -1,26 +1,31 @@
 const express = require("express");
+const mongoose = require("mongoose")
 const multer = require("multer");
+const { GridFsStorage } = require("multer-gridfs-storage");
 const Image = require("../models/ImageModel.js");
 const router = express.Router();
 //for csv file
 const csv = require("csv-writer").createObjectCsvStringifier;
 
 
-//from multer documentation
-const storage = multer.diskStorage({
-  //where we have to upload image his is syntax
-  //cb(anyError,"filename") cb is call back function which have attribute error, filename
-  destination: function (req, file, cb) {
-    cb(null, "../client/src/images");
-    // cb(null, "uploads/"); this will save image into upload
-  },
-  //creating a unique file name for each imagae
-  filename: function (req, file, cb) {
-    const uniqueSuffix = Date.now(); // this provide ans unique file name
-    cb(null, uniqueSuffix + file.originalname);
-  },
+// MongoDB connection
+const mongoURI =
+  "mongodb+srv://dnyanankur:11111@cluster0.5slqu7t.mongodb.net/dnyanankur"; 
+const conn = mongoose.createConnection(mongoURI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
 });
-const upload = multer({ storage: storage });
+
+// Initialize GridFS storage engine
+const storage = new GridFsStorage({
+  db: conn,
+  file: (req, file) => {
+    return {
+      filename: file.originalname
+    };
+  }
+});
+const upload = multer({ storage });
 
 
 //endpoint to upload image

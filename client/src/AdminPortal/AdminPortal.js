@@ -77,6 +77,7 @@ const AdminPortal = () => {
       const downloadUrl = window.URL.createObjectURL(
         new Blob([downloadImages])
       );
+      console.log(setDownloadImages);
       const link = document.createElement("a");
       link.href = downloadUrl;
       link.setAttribute("download", "approved_images.docx");
